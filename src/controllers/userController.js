@@ -4,10 +4,10 @@ module.exports = {
   listUsers(request, response) {
     const { order } = request.query;
     let sortedUsers = users.sort((a, b) => {
-      if (order === 'asc') {
-        return a.id > b.id ? 1 : -1;
+      if (order === 'desc') {
+        return a.id < b.id ? 1 : -1;
       }
-      return a.id < b.id ? 1 : -1;
+      return a.id > b.id ? 1 : -1;
     });
 
     response.send(200, sortedUsers);
@@ -47,8 +47,8 @@ module.exports = {
   },
 
   updateUser(request, response) {
-    let { id } = request.params; // 2
-    const { name } = request.body; // aaaa
+    let { id } = request.params;
+    const { name } = request.body;
     id = Number(id);
 
     const findUserById = users.find((user) => user.id === id);
