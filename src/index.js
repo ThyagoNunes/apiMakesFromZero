@@ -6,8 +6,8 @@ const bodyParser = require('./helpers/bodyParser');
 
 const app = http.createServer((request, response) => {
   const parsedUrl = new URL(`http://localhost:3000${request.url}`);
-  console.log(`Request Method: ${request.method} | Endpoint: ${request.url}`);
 
+  console.log(parsedUrl);
   let { pathname } = parsedUrl;
 
   const spliEndPoint = pathname.split('/').filter(Boolean);

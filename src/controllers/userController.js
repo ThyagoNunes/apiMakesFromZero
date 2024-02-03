@@ -3,12 +3,13 @@ let users = require('../mocks/users');
 module.exports = {
   listUsers(request, response) {
     const { order } = request.query;
-    const sortedUsers = users.sort((a, b) => {
-      if (order === 'desc') {
-        return a.id < b.id ? 1 : -1;
+    let sortedUsers = users.sort((a, b) => {
+      if (order === 'asc') {
+        return a.id > b.id ? 1 : -1;
       }
-      return a.id > b.id ? 1 : -1;
+      return a.id < b.id ? 1 : -1;
     });
+
     response.send(200, sortedUsers);
   },
 
@@ -46,14 +47,14 @@ module.exports = {
   },
 
   updateUser(request, response) {
-    let { id } = request.params;
-    const { name } = request.body;
+    let { id } = request.params; // 2
+    const { name } = request.body; // aaaa
     id = Number(id);
 
     const findUserById = users.find((user) => user.id === id);
 
     if (!findUserById) {
-      return response.send(400, { error: `ID ${findUserById} not exists` });
+      return response.send(400, { error: `ID ${id} not exists` });
     }
 
     if (findUserById) {
@@ -61,7 +62,7 @@ module.exports = {
         return response.send(400, { error: 'Min 3 chars from name' });
       }
 
-      const allUsersName = users
+      const allUsersName = users // return all names excepted name id passed
         .filter((user) => user.id !== id)
         .map((user) => user.name);
 
@@ -69,8 +70,6 @@ module.exports = {
         return response.send(400, { error: `${name} has used in other object` });
       }
       findUserById.name = name;
-    } else {
-      return response.send(400, { error: `Not find object with id ${id}` });
     }
 
     response.send(200, { id, name });
